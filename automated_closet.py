@@ -4,49 +4,34 @@ import random
 import tkinter as tk
 from PIL import Image, ImageTk
 
+from tkinter import filedialog
+
+#working directory
 os.chdir("/Users/farihatanjin/Downloads")
 
+#formatting
 WINDOW_TITLE = 'Welcome to your closet!'
-WINDOW_WIDTH = 220
-WINDOW_HEIGHT = 500
-IMG_HEIGHT = 300
-IMG_WIDTH = 300
-BEIGE_COLOR_HEX = '#E3C396'
+WINDOW_WIDTH = 1000
+WINDOW_HEIGHT = 1400
+IMG_HEIGHT = 320
+IMG_WIDTH = 200
+TOP_HEIGHT = 280
+TOP_WIDTH = 230
+COLOR = '#F0C4B4'
 
 
 # dynamically open folders and make a list, while ignoring any hidden files that start with "."
-# just add any image file into these folders and they will magically appear in your wardrobe!
-# for fun, try to expand this wardrobe to support shoes!
-WARM_TOPS_CASUAL = [str("outfit/warm/casual/tops/") + file for file in os.listdir("outfit/warm/casual/tops/") if not file.startswith('.')]
-WARM_TOPS_PROFESSIONAL = [str("outfit/warm/professional/tops/") + file for file in os.listdir("outfit/warm/professional/tops/") if not file.startswith('.')]
-WARM_TOPS_WFH =[str("outfit/warm/WFM/tops/") + file for file in os.listdir("outfit/warm/WFM/tops/") if not file.startswith('.')]
 
-COLD_TOPS_CASUAL = [str("outfit/cold/casual/tops/") + file for file in os.listdir("outfit/cold/casual/tops/") if not file.startswith('.')]
-COLD_TOPS_PROFESSIONAL = [str("outfit/cold/professional/tops/") + file for file in os.listdir("outfit/cold/professional/tops/") if not file.startswith('.')]
-COLD_TOPS_WFH = [str("outfit/cold/wfh/tops/") + file for file in os.listdir("outfit/cold/wfh/tops/") if not file.startswith('.')]
+TOPS_CASUAL = [str("outfits/casual/tops/") + file for file in os.listdir("outfits/casual/tops/") if not file.startswith('.')]
+TOPS_PROFESSIONAL = [str("outfits/professional/tops/") + file for file in os.listdir("outfits/professional/tops/") if not file.startswith('.')]
+TOPS_WFH =[str("outfits/wfh/tops/") + file for file in os.listdir("outfits/wfh/tops/") if not file.startswith('.')]
 
-COLD_BOTTOMS_CASUAL = [str("outfit/cold/casual/bottoms/") + file for file in os.listdir("outfit/cold/casual/bottoms/") if not file.startswith('.')]
-COLD_BOTTOMS_PROFESSIONAL = [str("outfit/cold/professional/bottom/") + file for file in os.listdir("outfit/cold/professional/bottom/") if not file.startswith('.')]
-COLD_BOTTOMS_WFH = [str("outfit/cold/wfh/bottom/") + file for file in os.listdir("outfit/cold/wfh/bottom/") if not file.startswith('.')]
+BOTTOMS_CASUAL = [str("outfits/casual/bottoms/") + file for file in os.listdir("outfits/casual/bottoms/") if not file.startswith('.')]
+BOTTOMS_PROFESSIONAL = [str("outfits/professional/bottoms/") + file for file in os.listdir("outfits/professional/bottoms/") if not file.startswith('.')]
+BOTTOMS_WFH = [str("outfits/wfh/bottoms/") + file for file in os.listdir("outfits/wfh/bottoms/") if not file.startswith('.')]
 
-WARM_BOTTOMS_CASUAL = [str("outfit/warm/casual/bottom/") + file for file in os.listdir("outfit/warm/casual/bottom/") if not file.startswith('.')]
-WARM_BOTTOMS_PROFESSIONAL = [str("outfit/warm/professional/bottoms/") + file for file in os.listdir("outfit/warm/professional/bottoms/") if not file.startswith('.')]
-WARM_BOTTOMS_WFH = [str("outfit/warm/WFM/bottom/") + file for file in os.listdir("outfit/warm/WFM/bottom/") if not file.startswith('.')]
-
-
-
-#WARM_SHOES_CASUAL = [str("outfit/warm/shoes/casual/") + file for file in os.listdir("outfit/warm/shoes/casual/") if not file.startswith('.')]
-#WARM_SHOES_PROFESSIONAL = [str("outfit/warm/shoes/professional/") + file for file in os.listdir("outfit/warm/shoes/professional/") if not file.startswith('.')]
-#WARM_SHOES_WFH = [str("outfit/warm/shoes/WFH/") + file for file in os.listdir("outfit/warm/shoes/WFH/") if not file.startswith('.')]
-
-#COLD_SHOES_CASUAL = [str("outfit/cold/shoes/casual/") + file for file in os.listdir("outfit/cold/shoes/casual/") if not file.startswith('.')]
-#COLD_SHOES_PROFESSIONAL = [str("outfit/cold/shoes/professional/") + file for file in os.listdir("outfit/cold/shoes/professional/") if not file.startswith('.')]
-#COLD_SHOES_WFH = [str("outfit/cold/shoes/WFH/") + file for file in os.listdir("outfit/cold/shoes/WFH/") if not file.startswith('.')]
-
-
-ALL_TOPS = WARM_TOPS_CASUAL + WARM_TOPS_PROFESSIONAL + WARM_TOPS_WFH + COLD_TOPS_CASUAL + COLD_TOPS_PROFESSIONAL + COLD_TOPS_WFH
-ALL_BOTTOMS = WARM_BOTTOMS_CASUAL + WARM_BOTTOMS_PROFESSIONAL + WARM_BOTTOMS_WFH + COLD_BOTTOMS_CASUAL + COLD_BOTTOMS_PROFESSIONAL + COLD_BOTTOMS_WFH
-#ALL_SHOES =  WARM_SHOES_CASUAL + WARM_SHOES_PROFESSIONAL + WARM_SHOES_WFH + COLD_SHOES_CASUAL + COLD_SHOES_PROFESSIONAL + COLD_SHOES_WFH
+ALL_TOPS = TOPS_CASUAL + TOPS_PROFESSIONAL + TOPS_WFH
+ALL_BOTTOMS = BOTTOMS_CASUAL + BOTTOMS_PROFESSIONAL + BOTTOMS_WFH
 
 class WardrobeApp:
 
@@ -56,29 +41,21 @@ class WardrobeApp:
         # collecting all the clothes
         self.top_images = ALL_TOPS
         self.bottom_images = ALL_BOTTOMS
-       # self.bottom_images = ALL_SHOES
-
 
         # first pictures for top and bottom
         self.tops_image_path = self.top_images[0]
-     #   self.center_image_path = self.bottom_images[0]
         self.bottom_image_path = self.bottom_images[0]
 
-
-        # creating 3 frames
-        self.tops_frame = tk.Frame(self.root, bg=BEIGE_COLOR_HEX)
-     #   self.center_frame = tk.Frame(self.root, bg=BEIGE_COLOR_HEX)
-        self.bottoms_frame = tk.Frame(self.root, bg=BEIGE_COLOR_HEX)
+        # creating 2 frames
+        self.tops_frame = tk.Frame(self.root, bg=COLOR)
+        self.bottoms_frame = tk.Frame(self.root, bg=COLOR)
 
         # adding top
-        self.top_image_label = self.create_photo(self.tops_image_path, self.tops_frame)
+        self.top_image_label = self.create_photo2(self.tops_image_path, self.tops_frame)
         self.top_image_label.pack(side=tk.TOP)
 
-        # adding bottom
-     #   self.center_image_label = self.create_photo(self.center_image_path, self.center_frame)
-      #  self.center_image_label.pack(side=tk.RIGHT)
 
-        # addng shoes
+        # addng bottom
         self.bottom_image_label = self.create_photo(self.bottom_image_path, self.bottoms_frame)
         self.bottom_image_label.pack(side=tk.BOTTOM)
 
@@ -95,32 +72,45 @@ class WardrobeApp:
 
         # add the initial clothes onto the screen
         self.tops_frame.pack(fill=tk.BOTH, expand=tk.YES)
-     #   self.center_frame.pack(fill=tk.BOTH, expand=tk.YES)
         self.bottoms_frame.pack(fill=tk.BOTH, expand=tk.YES)
 
     def create_buttons(self):
-        top_prev_button = tk.Button(self.tops_frame, text="Prev", command=self.get_prev_top)
+
+# buttons for browsing closet
+        top_prev_button = tk.Button(self.tops_frame, text="Prev Top", highlightbackground='#97CEC8', command=self.get_prev_top)
         top_prev_button.pack(side=tk.LEFT)
 
-        create_outfit_button = tk.Button(self.tops_frame, text="Generate random outfit", command=self.create_outfit)
-        create_outfit_button.pack(side=tk.TOP)
-
-        top_next_button = tk.Button(self.tops_frame, text="Next", command=self.get_next_top)
+        top_next_button = tk.Button(self.tops_frame, text="Next Top", highlightbackground='#97CEC8', command=self.get_next_top)
         top_next_button.pack(side=tk.RIGHT)
 
-
-    #    center_prev_button = tk.Button(self.center_frame, text="Prev", command=self.get_prev_center)
-     #   center_prev_button.pack(side=tk.LEFT)
-
-#        center_next_button = tk.Button(self.center_frame, text="Next", command=self.get_next_center)
- #       center_next_button.pack(side=tk.RIGHT)
-
-        bottom_prev_button = tk.Button(self.bottoms_frame, text="Prev", command=self.get_prev_bottom)
+        bottom_prev_button = tk.Button(self.bottoms_frame, text="Prev Bottom", highlightbackground='#97CEC8', command=self.get_prev_bottom)
         bottom_prev_button.pack(side=tk.LEFT)
 
-        bottom_next_button = tk.Button(self.bottoms_frame, text="Next", command=self.get_next_bottom)
+        bottom_next_button = tk.Button(self.bottoms_frame, text="Next Bottom", highlightbackground='#97CEC8', command=self.get_next_bottom)
         bottom_next_button.pack(side=tk.RIGHT)
 
+#upload your own images
+        upload_top_button = tk.Button(root, text="Upload top", highlightbackground='#97CEC8', command= lambda: self.open_image(self.top_image_label))
+        upload_top_button.pack(side=tk.TOP)
+
+        upload_bottom_button = tk.Button(root, text="Upload bottom", highlightbackground='#97CEC8', command= lambda: self.open_image(self.bottom_image_label))
+        upload_bottom_button.pack(side=tk.BOTTOM)
+
+#outfit generator buttons
+        create_outfit_button = tk.Button(self.tops_frame, highlightbackground='#97CEC8',  text="Generate Random Outfit", command=self.create_outfit)
+        create_outfit_button.pack(side=tk.TOP, pady=14)
+
+        create_casual_button = tk.Button(self.tops_frame, highlightbackground='#97CEC8', text="Generate Casual Outfit", command=self.create_casual)
+        create_casual_button.pack(side=tk.TOP)
+
+        create_professional_button = tk.Button(self.bottoms_frame, highlightbackground='#97CEC8', text="Generate Professional Outfit", command=self.create_professional)
+        create_professional_button.pack(side=tk.TOP, pady=4)
+
+        create_wfh_button = tk.Button(self.bottoms_frame, highlightbackground='#97CEC8', text="Generate WFH outfit", command=self.create_wfh)
+        create_wfh_button.pack(side=tk.TOP,pady=3)
+
+
+#create photo bottom
     def create_photo(self, image, frame):
         top_image_file = Image.open(image)
         image = top_image_file.resize((IMG_WIDTH, IMG_HEIGHT), Image.ANTIALIAS)
@@ -130,10 +120,24 @@ class WardrobeApp:
 
         return image_label
 
+#create photo for tops with different height, width than bottoms
+    def create_photo2(self, image, frame):
+        top_image_file = Image.open(image)
+        image = top_image_file.resize((TOP_WIDTH, TOP_HEIGHT), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(image)
+        image_label = tk.Label(frame, image=photo, anchor=tk.CENTER)
+        image_label.image = photo
+
+        return image_label
+
     def update_photo(self, new_image, image_label):
         new_image_file = Image.open(new_image)
-        image = new_image_file.resize((IMG_WIDTH, IMG_HEIGHT), Image.ANTIALIAS)
+        if (image_label == self.top_image_label):
+            image = new_image_file.resize((TOP_WIDTH, TOP_HEIGHT), Image.ANTIALIAS)
+        else:
+            image = new_image_file.resize((IMG_WIDTH, IMG_HEIGHT), Image.ANTIALIAS)
         photo = ImageTk.PhotoImage(image)
+
         image_label.configure(image=photo)
         image_label.image = photo
 
@@ -162,9 +166,6 @@ class WardrobeApp:
         if current_item in self.top_images:
             image_label = self.top_image_label
             self.tops_image_path = next_image
-       # elif current_item in self.center_images:
-        #    image_label = self.center_image_label
-         #   self.center_image_path = next_image
         else:
             image_label = self.bottom_image_label
             self.bottom_image_path = next_image
@@ -178,20 +179,20 @@ class WardrobeApp:
     def get_prev_top(self):
         self._get_next_item(self.tops_image_path, self.top_images, increment=False)
 
-   # def get_prev_center(self):
-            #self._get_next_item(self.center_image_path, self.center_images, increment=False)
-
-   # def get_next_center(self):
-          #  self._get_next_item(self.center_image_path, self.center_images, increment=True)
-
     def get_prev_bottom(self):
         self._get_next_item(self.bottom_image_path, self.bottom_images, increment=False)
 
     def get_next_bottom(self):
         self._get_next_item(self.bottom_image_path, self.bottom_images, increment=True)
 
+#function for generating random outfits
     def create_outfit(self):
         # randomly select an outfit
+
+        self.top_images = ALL_TOPS
+        self.bottom_images = ALL_BOTTOMS
+
+
         new_top_index = random.randint(0, len(self.top_images)-1)
         new_bottom_index = random.randint(0, len(self.bottom_images)-1)
 
@@ -199,6 +200,61 @@ class WardrobeApp:
         self.update_photo(self.top_images[new_top_index], self.top_image_label)
         self.update_photo(self.bottom_images[new_bottom_index], self.bottom_image_label)
 
+#casual outfit generator
+    def create_casual(self):
+
+        #change image accordingly
+        self.top_images = TOPS_CASUAL
+        self.bottom_images = BOTTOMS_CASUAL
+
+        #random number generator
+        new_top_index = random.randint(0, len(self.top_images) - 1)
+        new_bottom_index = random.randint(0, len(self.bottom_images) - 1)
+
+        # add the clothes onto the screen
+        self.update_photo(self.top_images[new_top_index], self.top_image_label)
+        self.update_photo(self.bottom_images[new_bottom_index], self.bottom_image_label)
+
+
+#professional outfit generator
+    def create_professional(self):
+        self.top_images = TOPS_PROFESSIONAL
+        self.bottom_images = BOTTOMS_PROFESSIONAL
+
+        new_top_index = random.randint(0, len(self.top_images) - 1)
+        new_bottom_index = random.randint(0, len(self.bottom_images) - 1)
+
+        # add the clothes onto the screen
+        self.update_photo(self.top_images[new_top_index], self.top_image_label)
+        self.update_photo(self.bottom_images[new_bottom_index], self.bottom_image_label)
+
+#work from home outfit generator
+    def create_wfh(self):
+
+        self.top_images = TOPS_WFH
+        self.bottom_images = BOTTOMS_WFH
+
+        new_top_index = random.randint(0, len(self.top_images) - 1)
+        new_bottom_index = random.randint(0, len(self.bottom_images) - 1)
+
+        # add the clothes onto the screen
+        self.update_photo(self.top_images[new_top_index], self.top_image_label)
+        self.update_photo(self.bottom_images[new_bottom_index], self.bottom_image_label)
+
+#function for uploading own image
+    def open_image(self, image_label):
+        # Select the Imagename  from a folder
+
+
+        x = self.openfilename()
+        self.update_photo(x, image_label)
+
+
+    def openfilename(self):
+        # open file dialog box to select image
+        # The dialogue box has a title "Open"
+        filename = filedialog.askopenfilename(title='select item')
+        return filename
 
 
 if __name__ == '__main__':
@@ -207,20 +263,3 @@ if __name__ == '__main__':
 
     root.mainloop()
 
-
-    def create_outfit(self):
-        # randomly select an outfit
-        new_top_index = random.randint(0, len(self.top_images)-1)
-        new_bottom_index = random.randint(0, len(self.bottom_images)-1)
-
-        # add the clothes onto the screen
-        self.update_photo(self.top_images[new_top_index], self.top_image_label)
-        self.update_photo(self.bottom_images[new_bottom_index], self.bottom_image_label)
-
-
-
-if __name__ == '__main__':
-    root = tk.Tk()
-    app = WardrobeApp(root)
-
-    root.mainloop()
