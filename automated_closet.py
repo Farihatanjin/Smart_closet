@@ -6,8 +6,8 @@ from PIL import Image, ImageTk
 
 from tkinter import filedialog
 
-#working directory
-os.chdir("/Users/farihatanjin/Downloads")
+#set your own working directory
+#os.chdir("/Users/farihatanjin/Downloads")
 
 #formatting
 WINDOW_TITLE = 'Welcome to your closet!'
